@@ -1,6 +1,7 @@
 package main
 
 import (
+	"todo/auth"
 	"todo/todo"
 
 	"github.com/gin-gonic/gin"
@@ -23,6 +24,8 @@ func main() {
 			"message": "pong",
 		})
 	})
+
+	router.GET("/token", auth.AccessToken)
 
 	todosHandler := todo.NewTodoHandler(db)
 	router.POST("/todos", todosHandler.NewTask)

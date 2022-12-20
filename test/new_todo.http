@@ -2,6 +2,7 @@
 
 POST {{base_url}}/todos
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NzE1MzUyMTh9.9jlezqEwHf2Hd1tBojQOaHRh9MrBRkYS8XpjG1mBdHI
 
 {
     "title": "test 1"

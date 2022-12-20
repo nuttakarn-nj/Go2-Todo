@@ -2,6 +2,8 @@ package todo
 
 import (
 	"net/http"
+	"strings"
+	"todo/auth"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -31,6 +33,19 @@ func NewTodoHandler(db *gorm.DB) *TodoHandler {
 
 // t.NewTask()
 func (t *TodoHandler) NewTask(c *gin.Context) {
+	// middleware
+	// check token
+	authorization := c.Request.Header.Get("Authorization")
+	token := strings.TrimPrefix(authorization, "Bearer ")
+
+	authErr := auth.Protect(token)
+
+	if authErr != nil {
+		// stop to go next middleware
+		c.AbortWithStatus(http.StatusUnauthorized)
+		return
+	}
+
 	var todo Todo
 	err := c.ShouldBindJSON(&todo) // To bind a request body into a type
 

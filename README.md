@@ -10,9 +10,14 @@
 - Use extendtion in VS : REST Client
 - file .http
 - JWT : ใช้ทำ Authentication ก่อนเข้าถึง resource
->>> signature เป็นของที่เรา gen หรือไม่
->>> token หมดอายุหรือยัง
->>> Audian คือใคร
+>>> have 3 part : 
+1. Headers (Algorytm encryption) 
+2. Payloads (claim data) 
+3. Signature (ลายเซ็น)
+>>> การตรวจสอบ Token
+1. token หมดอายุหรือยัง
+2. signature เป็นของที่เรา gen หรือไม่
+3. Audian คือใคร Trusted ไหม
 
 # Database
 - Use extendtion in VS
