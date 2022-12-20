@@ -16,10 +16,11 @@ type Todo struct {
 
 // Todo = data
 // Todo.Tablename()
-func (Todo) Tablename() string {
+func (Todo) TableName() string {
 	return "todos"
 }
 
+// TodoHandler.db
 type TodoHandler struct {
 	db *gorm.DB
 }
@@ -31,8 +32,9 @@ func NewTodoHandler(db *gorm.DB) *TodoHandler {
 // t.NewTask()
 func (t *TodoHandler) NewTask(c *gin.Context) {
 	var todo Todo
-	err := c.ShouldBindJSON(todo) // To bind a request body into a type
+	err := c.ShouldBindJSON(&todo) // To bind a request body into a type
 
+	// Error
 	if err != nil {
 		// make JSON
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -41,4 +43,20 @@ func (t *TodoHandler) NewTask(c *gin.Context) {
 
 		return
 	}
+
+	// insert data
+	result := t.db.Create(&todo)
+
+	// Error
+	if result.Error != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": result.Error.Error(),
+		})
+		return
+	}
+
+	// Success
+	c.JSON(http.StatusCreated, gin.H{
+		"ID": todo.Model.ID, // ID from Model
+	})
 }
