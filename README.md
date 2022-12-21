@@ -6,7 +6,6 @@
 - PORT 8081 go run main.go : change PORT
 
 
-
 # Request API
 - Use extendtion in VS : REST Client
 - file .http
@@ -25,7 +24,12 @@
 - Create connect with file test.db
 
 
-# Command
+# Command  build
 # Build with parameter --ldflags
 1. go build -o app --ldflags "-X main.buildCommit=`git rev-parse --short HEAD` -X main.buildTime=`date "+%Y-%m-%dT%H:%M:%S%Z:00"`"
 2. app
+
+
+# Load test
+1. Install vegeta : go install github.com/tsenart/vegeta@latest
+2. echo "GET http://localhost:8080/limit" | vegeta attack -rate=10/s -duration=1s | vegeta report

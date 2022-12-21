@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"net/http"
 	"os"
 	"time"
 	"todo/auth"
@@ -9,6 +10,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+	"golang.org/x/time/rate"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
@@ -43,6 +45,7 @@ func main() {
 		})
 	})
 
+	router.GET("/limit", limitedHandler)
 	router.GET("/token", auth.AccessToken(signature))
 
 	// #ldflag get value from git
@@ -62,4 +65,18 @@ func main() {
 	protected.POST("/todos", todosHandler.NewTask)
 
 	router.Run()
+}
+
+// Test limit req
+var limiter = rate.NewLimiter(5, 5)
+func limitedHandler(ctx *gin.Context) {
+	if !limiter.Allow() {
+		ctx.AbortWithStatus(http.StatusTooManyRequests)
+		return
+	}
+
+	ctx.JSON(200, gin.H{
+		"message": "work fine & not over limit",
+	})
+
 }
