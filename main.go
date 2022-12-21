@@ -1,15 +1,25 @@
 package main
 
 import (
+	"log"
+	"os"
 	"todo/auth"
 	"todo/todo"
 
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
 
 func main() {
+	// load env
+	errEnv := godotenv.Load("local.env")
+	if errEnv != nil {
+		log.Printf("Please consider env %s", errEnv)
+	}
+	signature := []byte(os.Getenv("SIGNATURE"))
+
 	db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
 
 	if err != nil {
@@ -25,7 +35,6 @@ func main() {
 			"message": "pong",
 		})
 	})
-	signature := []byte("==mySignature==")
 
 	router.GET("/token", auth.AccessToken(signature))
 
