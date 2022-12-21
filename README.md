@@ -1,9 +1,10 @@
 # Go2-Todo
 
-# CMD
+# CMD Golang
 - install : go get -u gorm.io/driver/sqlite
 - add module requirements and sums : go mod tidy
 - PORT 8081 go run main.go : change PORT
+
 
 
 # Request API
@@ -22,3 +23,9 @@
 # Database
 - Use extendtion in VS
 - Create connect with file test.db
+
+
+# Command
+# Build with parameter --ldflags
+1. go build -o app --ldflags "-X main.buildCommit=`git rev-parse --short HEAD` -X main.buildTime=`date "+%Y-%m-%dT%H:%M:%S%Z:00"`"
+2. app

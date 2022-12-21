@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"os"
+	"time"
 	"todo/auth"
 	"todo/todo"
 
@@ -10,6 +11,12 @@ import (
 	"github.com/joho/godotenv"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
+)
+
+// set vairable for package main
+var (
+	buildCommit = "dev"
+	buildTime   = time.Now().String()
 )
 
 func main() {
@@ -37,6 +44,15 @@ func main() {
 	})
 
 	router.GET("/token", auth.AccessToken(signature))
+
+	// #ldflag get value from git
+	// if build with ldflag >> value come from git
+	router.GET("/commit", func(ctx *gin.Context) {
+		ctx.JSON(200, gin.H{
+			"buildCommit": buildCommit,
+			"buildTime":   buildTime,
+		})
+	})
 
 	// middleware
 	protected := router.Group("", auth.Protect(signature))
