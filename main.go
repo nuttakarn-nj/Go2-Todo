@@ -18,17 +18,23 @@ func main() {
 
 	db.AutoMigrate(&todo.Todo{})
 
+	// init router
 	router := gin.Default()
 	router.GET("/ping", func(ctx *gin.Context) {
 		ctx.JSON(200, gin.H{
 			"message": "pong",
 		})
 	})
+	signature := []byte("==mySignature==")
 
-	router.GET("/token", auth.AccessToken)
+	router.GET("/token", auth.AccessToken(signature))
 
+	// middleware
+	protected := router.Group("", auth.Protect(signature))
+
+	// assign middleware to route
 	todosHandler := todo.NewTodoHandler(db)
-	router.POST("/todos", todosHandler.NewTask)
+	protected.POST("/todos", todosHandler.NewTask)
 
 	router.Run()
 }
