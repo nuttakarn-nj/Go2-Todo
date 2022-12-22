@@ -77,3 +77,22 @@ func (t *TodoHandler) NewTask(c *gin.Context) {
 		"ID": todo.Model.ID, // ID from Model
 	})
 }
+
+// t.List()
+func (t *TodoHandler) List(ctx *gin.Context) {
+	var todos []Todo
+
+	result := t.db.Find(&todos)
+
+	err := result.Error
+
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+
+		return
+	}
+
+	ctx.JSON(http.StatusOK, todos)
+}

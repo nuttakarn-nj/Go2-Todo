@@ -6,11 +6,7 @@ GET {{base_url}}/token
 ###
 @token = {{auth.response.body.$.token}}
 
-POST {{base_url}}/todos
+GET {{base_url}}/todos
 Content-Type: application/json
 Authorization: Bearer {{token}}
 transID: t001
-
-{
-    "title": "sleep"
-}
