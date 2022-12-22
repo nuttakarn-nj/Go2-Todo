@@ -1,6 +1,7 @@
 package todo
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -41,6 +42,20 @@ func (t *TodoHandler) NewTask(c *gin.Context) {
 		// make JSON
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error": err.Error(), // response
+		})
+
+		return
+	}
+
+	// Logging
+	if todo.Title == "sleep" {
+		transID := c.Request.Header.Get("transID")
+		aud, _ := c.Get("aud")
+		msg := "not allow"
+
+		log.Println(transID, aud, msg)
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": msg,
 		})
 
 		return

@@ -13,6 +13,7 @@ func AccessToken(signature []byte) gin.HandlerFunc {
 		// create claims (Payloads)
 		claims := &jwt.StandardClaims{
 			ExpiresAt: time.Now().Add(5 * time.Minute).Unix(),
+			Audience: "Nuttakarn",
 		}
 
 		// sign with headers
