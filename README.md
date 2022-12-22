@@ -34,7 +34,13 @@
 1. Install vegeta : go install github.com/tsenart/vegeta@latest
 2. echo "GET http://localhost:8080/limit" | vegeta attack -rate=10/s -duration=1s | vegeta report
 
-# Deployment
+# Deployment manual
 1. Run docker demon
 2. Run maria db instance with Makefile : make maria
-3. Run go app
+3. Build & run >> Build with parameter --ldflags
+
+# Deploy with docker & make
+1. Run docker demon
+2. Run maria db instance with Makefile : make maria >> map some-mariadb with db
+3. Build docker image : make image
+4. Run docker contianer : make container
