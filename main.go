@@ -77,6 +77,7 @@ func main() {
 	todosHandler := todo.NewTodoHandler(db)
 	protected.POST("/todos", todosHandler.NewTask)
 	protected.GET("/todos", todosHandler.List)
+	protected.DELETE("/todos/:id", todosHandler.Remove)
 
 	router.Run()
 }
